@@ -46,7 +46,7 @@ class ViewController: UIViewController {
             textView.text = ""
         }
 
-        if textView.elements.last == nil || !textView.canAddOperator || textView.expressionHaveResult {
+        if textView.elements.last == nil || !textView.canAddOperator {
             textView.text.append("0.")
         } else if textView.canAddOperator {
             textView.text.append(".")
