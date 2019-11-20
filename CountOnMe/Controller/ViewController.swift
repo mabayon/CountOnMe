@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         }
         
         if textView.expressionHaveResult {
-            textView.text = ""
+            textView.text = "0"
         }
         
         if numberText == "0" && textView.elements.last == "0" {
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     
     @IBAction func decimalTapped(_ sender: Any) {
         if textView.expressionHaveResult {
-            textView.text = ""
+            textView.text = "0"
         }
 
         _ = textView.canAddOperator ? textView.text.append(".") : textView.text.append("0.")
