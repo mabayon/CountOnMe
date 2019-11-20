@@ -20,20 +20,84 @@ class ReduceOperation {
     private func reduce() {
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            let left = Int(operationsToReduce[0])!
-            let operand = operationsToReduce[1]
-            let right = Int(operationsToReduce[2])!
+            
+            var index: Array<String>.Index = 1
+            
+            var left = Int(operationsToReduce[index - 1])!
+            var operand = operationsToReduce[index]
+            var right = Int(operationsToReduce[index + 1])!
+            
+            if let firstIndex = checkForFirstPriority() {
+                index = firstIndex
+
+                left = Int(operationsToReduce[index - 1])!
+                operand = operationsToReduce[index]
+                right = Int(operationsToReduce[index + 1])!
+            }
             
             let result: Int
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
+            case "x": result = multiply(numA: left, numB: right)
+                
+            case "/":
+                
+                do {
+                    result = try divide(numA: left, numB: right)
+                } catch CalculError.divisionByZero {
+                    result = 0
+                    operationsReduced = "Erreur"
+                    return
+                } catch {
+                    result = 0
+                    operationsReduced = "Erreur inattendue"
+                    return
+                }
+                
             default: fatalError("Unknown operator !")
             }
             
-            operationsToReduce = Array(operationsToReduce.dropFirst(3))
-            operationsToReduce.insert("\(result)", at: 0)
+            operationsToReduce = removeAndReplaceByResult(array: operationsToReduce, index: index, result: "\(result)")
             operationsReduced = String(result)
         }
+    }
+    
+    private func checkForFirstPriority() -> Array<String>.Index? {
+        let indexA = operationsToReduce.firstIndex(of: "/")
+        let indexB = operationsToReduce.firstIndex(of: "x")
+        
+        if let indexA = indexA, let indexB = indexB {
+            return indexA < indexB ? indexA : indexB
+        } else if let indexA = indexA {
+            return indexA
+        } else if let indexB = indexB {
+            return indexB
+        } else {
+            return nil
+        }
+    }
+    
+    private func removeAndReplaceByResult(array: [String], index: Array<String>.Index, result: String) -> [String] {
+        var newArray = array
+        newArray.remove(at: index + 1)
+        newArray.remove(at: index)
+        newArray[index - 1] = result
+        return newArray
+    }
+    
+    private func multiply(numA: Int, numB: Int) -> Int {
+        return numA * numB
+    }
+    
+    private func divide(numA: Int, numB: Int) throws -> Int {
+        guard numB != 0 else {
+            throw CalculError.divisionByZero
+        }
+        return numA / numB
+    }
+    
+    enum CalculError: Error {
+        case divisionByZero
     }
 }
