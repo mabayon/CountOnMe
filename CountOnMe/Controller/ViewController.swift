@@ -41,6 +41,18 @@ class ViewController: UIViewController {
         textView.text.append(numberText)
     }
     
+    @IBAction func decimalTapped(_ sender: Any) {
+        if textView.expressionHaveResult {
+            textView.text = ""
+        }
+
+        if textView.elements.last == nil || !textView.canAddOperator || textView.expressionHaveResult {
+            textView.text.append("0.")
+        } else if textView.canAddOperator {
+            textView.text.append(".")
+        }
+    }
+    
     @IBAction func deleteTapped(_ sender: Any) {
         if deleteButton.titleLabel?.text == "C" {
             textView.deleteLastElement()
