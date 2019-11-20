@@ -51,10 +51,14 @@ class CalculatorTextView: UITextView {
         var copyElements = elements
         
         if !copyElements.isEmpty {
+            let lastIsAnOperators = isAnOperators
             copyElements.removeLast()
             self.text = ""
             for element in copyElements {
                 self.text.append(element + " ")
+            }
+            if lastIsAnOperators {
+                text.removeLast()
             }
         }
     }

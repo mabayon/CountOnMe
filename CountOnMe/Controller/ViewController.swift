@@ -46,27 +46,27 @@ class ViewController: UIViewController {
             textView.text = ""
         }
 
-        if textView.elements.last == nil || !textView.canAddOperator {
-            textView.text.append("0.")
-        } else if textView.canAddOperator {
-            textView.text.append(".")
-        }
+        _ = textView.canAddOperator ? textView.text.append(".") : textView.text.append("0.")
     }
     
     @IBAction func deleteTapped(_ sender: Any) {
         if deleteButton.titleLabel?.text == "C" {
-            textView.deleteLastElement()
+            _ = textView.elements.count == 1 ? textView.text = "0" : textView.deleteLastElement()
         } else {
-            textView.text.removeAll()
+            textView.text = "0"
         }
     }
     
+    private func alert(title: String, message: String) {
+        let alertVC = Alert.shared.createAnAlert(title: title, message: message)
+        self.present(alertVC, animated: true, completion: nil)
+    }
+    
     @IBAction func tappedAdditionButton(_ sender: UIButton) {
-        if textView.canAddOperator && !textView.expressionHaveResult{
+        if textView.canAddOperator && !textView.expressionHaveResult {
             textView.text.append(" + ")
         } else {
-            let alertVC = Alert.shared.createAnAlert(title: "Zéro!", message: "Un operateur est déja mis !")
-            self.present(alertVC, animated: true, completion: nil)
+            alert(title: "Zéro!", message: "Un operateur est déja mis !")
         }
     }
     
@@ -74,8 +74,7 @@ class ViewController: UIViewController {
         if textView.canAddOperator && !textView.expressionHaveResult {
             textView.text.append(" - ")
         } else {
-            let alertVC = Alert.shared.createAnAlert(title: "Zéro!", message: "Un operateur est déja mis !")
-            self.present(alertVC, animated: true, completion: nil)
+            alert(title: "Zéro!", message: "Un operateur est déja mis !")
         }
     }
     
@@ -83,8 +82,7 @@ class ViewController: UIViewController {
         if textView.canAddOperator && !textView.expressionHaveResult {
             textView.text.append(" x ")
         } else {
-            let alertVC = Alert.shared.createAnAlert(title: "Zéro!", message: "Un operateur est déja mis !")
-            self.present(alertVC, animated: true, completion: nil)
+            alert(title: "Zéro!", message: "Un operateur est déja mis !")
         }
     }
     
@@ -92,20 +90,17 @@ class ViewController: UIViewController {
         if textView.canAddOperator && !textView.expressionHaveResult {
             textView.text.append(" / ")
         } else {
-            let alertVC = Alert.shared.createAnAlert(title: "Zéro!", message: "Un operateur est déja mis !")
-            self.present(alertVC, animated: true, completion: nil)
+            alert(title: "Zéro!", message: "Un operateur est déja mis !")
         }
     }
 
     @IBAction func tappedEqualButton(_ sender: UIButton) {
         guard textView.expressionIsCorrect else {
-            let alertVC = Alert.shared.createAnAlert(title: "Zéro!", message: "Entrez une expression correcte !")
-            return self.present(alertVC, animated: true, completion: nil)
+            return alert(title: "Zéro!", message: "Entrez une expression correcte !")
         }
         
         guard textView.expressionHaveEnoughElement else {
-            let alertVC = Alert.shared.createAnAlert(title: "Zéro!", message: "Démarrez un nouveau calcul !")
-            return self.present(alertVC, animated: true, completion: nil)
+            return alert(title: "Zéro!", message: "Démarrez un nouveau calcul !")
         }
 
         let reduceOperation = ReduceOperation(operationsToReduce: textView.elements)
@@ -120,7 +115,7 @@ class ViewController: UIViewController {
 extension ViewController: CalculatorTextViewDelegate {
 
     func textDidChange() {
-        if textView.expressionHaveResult || textView.text == "" {
+        if textView.expressionHaveResult || textView.text == "0" {
             deleteButton.setTitle("AC", for: .normal)
         } else {
             deleteButton.setTitle("C", for: .normal)
