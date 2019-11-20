@@ -23,19 +23,19 @@ class ReduceOperation {
             
             var index: Array<String>.Index = 1
             
-            var left = Int(operationsToReduce[index - 1])!
+            var left = Float(operationsToReduce[index - 1])!
             var operand = operationsToReduce[index]
-            var right = Int(operationsToReduce[index + 1])!
+            var right = Float(operationsToReduce[index + 1])!
             
             if let firstIndex = checkForFirstPriority() {
                 index = firstIndex
 
-                left = Int(operationsToReduce[index - 1])!
+                left = Float(operationsToReduce[index - 1])!
                 operand = operationsToReduce[index]
-                right = Int(operationsToReduce[index + 1])!
+                right = Float(operationsToReduce[index + 1])!
             }
             
-            let result: Int
+            let result: Float
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
@@ -59,7 +59,8 @@ class ReduceOperation {
             }
             
             operationsToReduce = removeAndReplaceByResult(array: operationsToReduce, index: index, result: "\(result)")
-            operationsReduced = String(result)
+            let isInt = floorf(result) == result
+            operationsReduced = isInt ? String(format: "%.0f", result) : String(result)
         }
     }
     
@@ -86,11 +87,11 @@ class ReduceOperation {
         return newArray
     }
     
-    private func multiply(numA: Int, numB: Int) -> Int {
+    private func multiply(numA: Float, numB: Float) -> Float {
         return numA * numB
     }
     
-    private func divide(numA: Int, numB: Int) throws -> Int {
+    private func divide(numA: Float, numB: Float) throws -> Float {
         guard numB != 0 else {
             throw CalculError.divisionByZero
         }

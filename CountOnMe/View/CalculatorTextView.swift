@@ -54,7 +54,7 @@ class CalculatorTextView: UITextView {
             copyElements.removeLast()
             self.text = ""
             for element in copyElements {
-                self.text.append(element)
+                self.text.append(element + " ")
             }
         }
     }

@@ -33,7 +33,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationsReduced = Int(operationReduced) {
+            let intOperationsReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationsReduced, 3 + 5)
         }
     }
@@ -46,7 +46,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationsReduced = Int(operationReduced) {
+            let intOperationsReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationsReduced, 19 - 9)
         }
     }
@@ -59,7 +59,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationReduced = Int(operationReduced) {
+            let intOperationReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationReduced, 30 * 29)
         }
     }
@@ -72,7 +72,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationReduced = Int(operationReduced) {
+            let intOperationReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationReduced, 45 / 5)
         }
     }
@@ -97,7 +97,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationReduced = Int(operationReduced) {
+            let intOperationReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationReduced, 34 + 32 * 13)
         }
     }
@@ -111,7 +111,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationReduced = Int(operationReduced) {
+            let intOperationReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationReduced, 25 - 12 / 55)
         }
     }
@@ -126,7 +126,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationReduced = Int(operationReduced) {
+            let intOperationReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationReduced, 23 - 64 / 12 + 43 * 14)
         }
     }
@@ -140,7 +140,7 @@ class ReduceOperationTestCase: XCTestCase {
         
         // Then
         if let operationReduced = reduceOperation.operationsReduced,
-            let intOperationReduced = Int(operationReduced) {
+            let intOperationReduced = Float(operationReduced) {
             XCTAssertEqual(intOperationReduced, 2 + 2 * 2 / 2)
         }
     }

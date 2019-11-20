@@ -30,6 +30,14 @@ class ViewController: UIViewController {
             textView.text = ""
         }
         
+        if numberText == "0" && textView.elements.last == "0" {
+            return
+        }
+        
+        if textView.elements.last == "0" {
+            textView.deleteLastElement()
+        }
+        
         textView.text.append(numberText)
     }
     
