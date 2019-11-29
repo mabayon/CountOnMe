@@ -20,13 +20,14 @@ class ReduceOperation {
     private func reduce() {
         // Iterate over operations while an operand still here
         while operationsToReduce.count > 1 {
-            
+
             var index: Array<String>.Index = 1
-            
+
             var left = Float(operationsToReduce[index - 1])!
             var operand = operationsToReduce[index]
             var right = Float(operationsToReduce[index + 1])!
             
+            // If there is a priority change index
             if let firstIndex = checkForFirstPriority() {
                 index = firstIndex
 
@@ -57,9 +58,11 @@ class ReduceOperation {
                 
             default: fatalError("Unknown operator !")
             }
-            
+            // Remove elements reduced and remplace them by the result
             operationsToReduce = removeAndReplaceByResult(array: operationsToReduce, index: index, result: "\(result)")
+            // Check if the result is an integer
             let isInt = floorf(result) == result
+            // And if it is an integrer don't display decimal
             operationsReduced = isInt ? String(format: "%.0f", result) : String(result)
         }
     }

@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     // View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+
         textView.calculatorDelegate = self
     }
     
@@ -25,15 +25,17 @@ class ViewController: UIViewController {
         guard let numberText = sender.title(for: .normal) else {
             return
         }
-        
-        if textView.expressionHaveResult {
+        // If there is a result put textView = "0"
+        if textView.expressionHaveResult || textView.text == "Erreur" {
             textView.text = "0"
         }
         
+        // If there is already a zero return
         if numberText == "0" && textView.elements.last == "0" {
             return
         }
         
+        // If element is 0 rempace it
         if textView.elements.last == "0" {
             textView.deleteLastElement()
         }
@@ -42,10 +44,11 @@ class ViewController: UIViewController {
     }
     
     @IBAction func decimalTapped(_ sender: Any) {
+        // If there is a result reset textView
         if textView.expressionHaveResult {
             textView.text = "0"
         }
-
+        // If there is already a number (canAddOperator) add . else add 0.
         _ = textView.canAddOperator ? textView.text.append(".") : textView.text.append("0.")
     }
     
