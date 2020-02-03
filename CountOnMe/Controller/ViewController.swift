@@ -35,7 +35,7 @@ class ViewController: UIViewController {
             return
         }
         
-        // If element is 0 rempace it
+        // If element is 0 remplace it
         if textView.elements.last == "0" {
             textView.deleteLastElement()
         }
@@ -102,7 +102,7 @@ class ViewController: UIViewController {
             return alert(title: "Zéro!", message: "Entrez une expression correcte !")
         }
         
-        guard textView.expressionHaveEnoughElement else {
+        guard textView.expressionHaveEnoughElement && !textView.expressionHaveResult else {
             return alert(title: "Zéro!", message: "Démarrez un nouveau calcul !")
         }
 
