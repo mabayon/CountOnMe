@@ -9,34 +9,126 @@
 import Foundation
 
 class ReduceOperation {
-    private var operationsToReduce: [String]
-    var operationsReduced: String?
+    var operationsToReduce: String = "0" {
+        didSet {
+            createNotification(for: .OperationDidChange)
+        }
+    }
     
-    init(operationsToReduce: [String]) {
-        self.operationsToReduce = operationsToReduce
-        self.reduce()
+    var operationsReduced: String = ""
+    
+    var elements: [String] {
+        return operationsToReduce.split(separator: " ").map { "\($0)" }
+    }
+    
+    var isAnOperators: Bool {
+        return elements.last == "+" || elements.last == "-" || elements.last == "x" || elements.last == "/"
+    }
+    
+    var expressionIsCorrect: Bool {
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
+    }
+    
+    var expressionHaveEnoughElement: Bool {
+        return elements.count >= 3
+    }
+    
+    var canAddOperator: Bool {
+        return elements.last != "+" && elements.last != "-" && elements.last != "x" && elements.last != "/"
+    }
+    
+    var expressionHaveResult: Bool {
+        return elements.firstIndex(of: "=") != nil
+    }
+    
+    var isDecimal: Bool {
+        return elements.last?.firstIndex(of: ".") != nil
+    }
+    
+    func addNumber(newElement: String) {
+        if elements.last == "0" {
+            if newElement == "0" {
+                return
+            } else {
+                operationsToReduce.removeLast()
+                operationsToReduce += newElement
+            }
+        } else if expressionHaveResult || operationsReduced == "Erreur" {
+            operationsToReduce = newElement
+            operationsReduced = ""
+        } else {
+            operationsToReduce.append(newElement)
+        }
+    }
+    
+    func addOperator(newElement: String) {
+        if canAddOperator && !expressionHaveResult {
+            operationsToReduce.append(" " + newElement + " ")
+        } else if expressionHaveResult {
+            createNotification(for: .ErrorResult)
+            return
+        }
+        createNotification(for: .ErrorOperator)
+    }
+    
+    func addDecimal() {
+        if expressionHaveResult || isAnOperators {
+            operationsToReduce = expressionHaveResult ? "0." : operationsToReduce + "0."
+        } else if !isAnOperators && !isDecimal {
+            operationsToReduce += "."
+        }
+    }
+        
+    func delete() {
+        if isAnOperators {
+            operationsToReduce.removeLast(3)
+        } else {
+            operationsToReduce.removeLast()
+        }
+        
+        if operationsToReduce.count == 0 || expressionHaveResult {
+            operationsToReduce = "0"
+        }
+    }
+    
+    func calculResult() {
+        guard !expressionHaveResult && operationsReduced != "Erreur" else {
+            createNotification(for: .ErrorResult)
+            return
+        }
+        
+        guard expressionHaveEnoughElement && expressionIsCorrect else {
+            createNotification(for: .ErrorExpression)
+            return
+        }
+        
+        reduce()
+        operationsToReduce.append(" = ")
+        operationsToReduce = operationsReduced != "Erreur" ?
+            operationsToReduce + operationsReduced : operationsReduced
     }
     
     private func reduce() {
+        var operationArray = elements
         // Iterate over operations while an operand still here
-        while operationsToReduce.count > 1 {
+        while operationArray.count > 1 {
 
             var index: Array<String>.Index = 1
 
-            var left = Float(operationsToReduce[index - 1])!
-            var operand = operationsToReduce[index]
-            var right = Float(operationsToReduce[index + 1])!
+            var left = Double(operationArray[index - 1])!
+            var operand = operationArray[index]
+            var right = Double(operationArray[index + 1])!
             
             // If there is a priority change index
-            if let firstIndex = checkForFirstPriority() {
+            if let firstIndex = checkForFirstPriority(in: operationArray) {
                 index = firstIndex
 
-                left = Float(operationsToReduce[index - 1])!
-                operand = operationsToReduce[index]
-                right = Float(operationsToReduce[index + 1])!
+                left = Double(operationArray[index - 1])!
+                operand = operationArray[index]
+                right = Double(operationArray[index + 1])!
             }
             
-            let result: Float
+            let result: Double
             switch operand {
             case "+": result = left + right
             case "-": result = left - right
@@ -59,17 +151,18 @@ class ReduceOperation {
             default: fatalError("Unknown operator !")
             }
             // Remove elements reduced and remplace them by the result
-            operationsToReduce = removeAndReplaceByResult(array: operationsToReduce, index: index, result: "\(result)")
+            operationArray = removeAndReplaceByResult(array: operationArray, index: index, result: "\(result)")
+            
             // Check if the result is an integer
-            let isInt = floorf(result) == result
+            let isInt = floor(result) == result
             // And if it is an integrer don't display decimal
             operationsReduced = isInt ? String(format: "%.0f", result) : String(result)
         }
     }
     
-    private func checkForFirstPriority() -> Array<String>.Index? {
-        let indexA = operationsToReduce.firstIndex(of: "/")
-        let indexB = operationsToReduce.firstIndex(of: "x")
+    private func checkForFirstPriority(in elements: [String]) -> Array<String>.Index? {
+        let indexA = elements.firstIndex(of: "/")
+        let indexB = elements.firstIndex(of: "x")
         
         if let indexA = indexA, let indexB = indexB {
             return indexA < indexB ? indexA : indexB
@@ -77,9 +170,8 @@ class ReduceOperation {
             return indexA
         } else if let indexB = indexB {
             return indexB
-        } else {
-            return nil
         }
+        return nil
     }
     
     private func removeAndReplaceByResult(array: [String], index: Array<String>.Index, result: String) -> [String] {
@@ -90,15 +182,20 @@ class ReduceOperation {
         return newArray
     }
     
-    private func multiply(numA: Float, numB: Float) -> Float {
+    private func multiply(numA: Double, numB: Double) -> Double {
         return numA * numB
     }
     
-    private func divide(numA: Float, numB: Float) throws -> Float {
+    private func divide(numA: Double, numB: Double) throws -> Double {
         guard numB != 0 else {
             throw CalculError.divisionByZero
         }
         return numA / numB
+    }
+    
+    private func createNotification(for name: Notification.Name) {
+        let notification = Notification(name: name)
+        NotificationCenter.default.post(notification)
     }
     
     enum CalculError: Error {

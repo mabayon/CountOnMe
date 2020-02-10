@@ -13,7 +13,7 @@
 		1FA43BDA224E569A00F565CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1FA43BD9224E569A00F565CB /* Assets.xcassets */; };
 		1FA43BDD224E569A00F565CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1FA43BDB224E569A00F565CB /* LaunchScreen.storyboard */; };
 		5C03B3E0238038DD0061D9E4 /* Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C03B3DF238038DD0061D9E4 /* Alert.swift */; };
-		5C372E752383FD36007A1FEE /* CalculatorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C372E742383FD36007A1FEE /* CalculatorTextView.swift */; };
+		5C54693523F1A2DC006A985A /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C54693423F1A2DC006A985A /* Extension.swift */; };
 		5C5FDF80237C15C200A84520 /* ReduceOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FDF7F237C15C200A84520 /* ReduceOperation.swift */; };
 		5C5FDF97237C230800A84520 /* ReduceOperationTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5FDF96237C230800A84520 /* ReduceOperationTestCase.swift */; };
 /* End PBXBuildFile section */
@@ -37,7 +37,7 @@
 		1FA43BDC224E569A00F565CB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1FA43BDE224E569A00F565CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5C03B3DF238038DD0061D9E4 /* Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alert.swift; sourceTree = "<group>"; };
-		5C372E742383FD36007A1FEE /* CalculatorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorTextView.swift; sourceTree = "<group>"; };
+		5C54693423F1A2DC006A985A /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		5C5FDF7F237C15C200A84520 /* ReduceOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReduceOperation.swift; sourceTree = "<group>"; };
 		5C5FDF8C237C22AB00A84520 /* CountOnMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountOnMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C5FDF90237C22AB00A84520 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -106,7 +106,6 @@
 			children = (
 				1FA43BDB224E569A00F565CB /* LaunchScreen.storyboard */,
 				1FA43BD6224E569900F565CB /* Main.storyboard */,
-				5C372E742383FD36007A1FEE /* CalculatorTextView.swift */,
 				5C03B3DF238038DD0061D9E4 /* Alert.swift */,
 			);
 			path = View;
@@ -116,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				5C5FDF7F237C15C200A84520 /* ReduceOperation.swift */,
+				5C54693423F1A2DC006A985A /* Extension.swift */,
 			);
 			path = Modele;
 			sourceTree = "<group>";
@@ -239,10 +239,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5C54693523F1A2DC006A985A /* Extension.swift in Sources */,
 				5C5FDF80237C15C200A84520 /* ReduceOperation.swift in Sources */,
 				1FA43BD5224E569900F565CB /* ViewController.swift in Sources */,
 				5C03B3E0238038DD0061D9E4 /* Alert.swift in Sources */,
-				5C372E752383FD36007A1FEE /* CalculatorTextView.swift in Sources */,
 				1FA43BD3224E569900F565CB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
