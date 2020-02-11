@@ -86,7 +86,8 @@ class ReduceOperation {
             operationToReduce.removeLast()
         }
         
-        if operationToReduce.count == 0 || expressionHaveResult {
+        if operationToReduce.count == 0 || expressionHaveResult || operationReduced == "Erreur" {
+            operationReduced = ""
             operationToReduce = "0"
         }
     }
