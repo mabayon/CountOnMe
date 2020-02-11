@@ -22,7 +22,7 @@ class ReduceOperationTestCase: XCTestCase {
     }
     
     func reduce(operation: String) {
-        reduceOperation.operationsToReduce = operation
+        reduceOperation.operationToReduce = operation
         reduceOperation.calculResult()
     }
     
@@ -34,7 +34,7 @@ class ReduceOperationTestCase: XCTestCase {
         let element = "0"
         
         // When
-        reduceOperation.operationsToReduce = "0"
+        reduceOperation.operationToReduce = "0"
         reduceOperation.addNumber(newElement: element)
         
         // Then
@@ -47,11 +47,11 @@ class ReduceOperationTestCase: XCTestCase {
         let element = "4"
         
         // When
-        reduceOperation.operationsToReduce = "0"
+        reduceOperation.operationToReduce = "0"
         reduceOperation.addNumber(newElement: element)
 
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "4")
+        XCTAssertEqual(reduceOperation.operationToReduce, "4")
     }
 
     func testGivenUserAddNumber6_WhenThereIsAResult_Then6ShouldReplaceTheResult() {
@@ -59,11 +59,11 @@ class ReduceOperationTestCase: XCTestCase {
         let element = "6"
         
         // When
-        reduceOperation.operationsToReduce = "2 + 2 = 4"
+        reduceOperation.operationToReduce = "2 + 2 = 4"
         reduceOperation.addNumber(newElement: element)
 
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "6")
+        XCTAssertEqual(reduceOperation.operationToReduce, "6")
     }
     
     func testGivenUserAddNumber4_WhenThereIsAnError_Then4ShouldReplaceError() {
@@ -71,12 +71,12 @@ class ReduceOperationTestCase: XCTestCase {
         let element = "4"
         
         // When
-        reduceOperation.operationsToReduce = ""
-        reduceOperation.operationsReduced = "Erreur"
+        reduceOperation.operationToReduce = ""
+        reduceOperation.operationReduced = "Erreur"
         reduceOperation.addNumber(newElement: element)
 
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "4")
+        XCTAssertEqual(reduceOperation.operationToReduce, "4")
     }
     
     // MARK: Test addOperator()
@@ -86,11 +86,11 @@ class ReduceOperationTestCase: XCTestCase {
         let element = "+"
         
         // When
-        reduceOperation.operationsToReduce = "22"
+        reduceOperation.operationToReduce = "22"
         reduceOperation.addOperator(newElement: element)
 
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "22 + ")
+        XCTAssertEqual(reduceOperation.operationToReduce, "22 + ")
     }
     
     func testGivenUserAddMinusOperator_WhenThereIsAlreadyOne_ThenNothingShouldHappened() {
@@ -98,11 +98,11 @@ class ReduceOperationTestCase: XCTestCase {
         let element = "-"
         
         // When
-        reduceOperation.operationsToReduce = "45 - "
+        reduceOperation.operationToReduce = "45 - "
         reduceOperation.addOperator(newElement: element)
 
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "45 - ")
+        XCTAssertEqual(reduceOperation.operationToReduce, "45 - ")
     }
     
     func testGivenUserAddMultiply_WhenThereIsAResult_ThenShouldSendANotification() {
@@ -110,7 +110,7 @@ class ReduceOperationTestCase: XCTestCase {
         let element = "x"
         
         // When
-        reduceOperation.operationsToReduce = "33 - 9 ="
+        reduceOperation.operationToReduce = "33 - 9 ="
 
         // Then
         let expect = XCTNSNotificationExpectation(name: .ErrorResult)
@@ -123,67 +123,67 @@ class ReduceOperationTestCase: XCTestCase {
     func testGivenUserAddDecimal_WhenThereIsAResult_ThenShouldAdd0Point() {
         
         // When
-        reduceOperation.operationsToReduce = "45 - 5 = 40"
+        reduceOperation.operationToReduce = "45 - 5 = 40"
         reduceOperation.addDecimal()
 
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "0.")
+        XCTAssertEqual(reduceOperation.operationToReduce, "0.")
     }
     
     func testGivenUserAddDecimal_WhenThereIsAnOperator_ThenShouldAdd0Point() {
         // When
-        reduceOperation.operationsToReduce = "43 - "
+        reduceOperation.operationToReduce = "43 - "
         reduceOperation.addDecimal()
         
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "43 - 0.")
+        XCTAssertEqual(reduceOperation.operationToReduce, "43 - 0.")
     }
     
     func testGivenUserAddDecimal_WhenThereIsANumber_ThenShouldAddPoint() {
         // When
-        reduceOperation.operationsToReduce = "43 + 5"
+        reduceOperation.operationToReduce = "43 + 5"
         reduceOperation.addDecimal()
         
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "43 + 5.")
+        XCTAssertEqual(reduceOperation.operationToReduce, "43 + 5.")
     }
     
     func testGivenUserAddDecimal_WhenNumberIsAlreadyADecimal_ThenNothingShouldHappened() {
         // When
-        reduceOperation.operationsToReduce = "43 + 5."
+        reduceOperation.operationToReduce = "43 + 5."
         reduceOperation.addDecimal()
         
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "43 + 5.")
+        XCTAssertEqual(reduceOperation.operationToReduce, "43 + 5.")
     }
     
     // MARK: Test delete()
     
     func testGivenUserDelete_WhenItIsANumber_ThenShouldDeleteTheLastOccurence() {
         // When
-        reduceOperation.operationsToReduce = "123 + 5"
+        reduceOperation.operationToReduce = "123 + 5"
         reduceOperation.delete()
         
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "123 + ")
+        XCTAssertEqual(reduceOperation.operationToReduce, "123 + ")
     }
     
     func testGivenUserDelete_WhenItIsAnOperator_ThenShouldDeleteTheOperatorAndSpaceBetween() {
         // When
-        reduceOperation.operationsToReduce = "123 + "
+        reduceOperation.operationToReduce = "123 + "
         reduceOperation.delete()
         
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "123")
+        XCTAssertEqual(reduceOperation.operationToReduce, "123")
     }
     
     func testGivenUserDelete_WhenThereIsOnlyOneOccurence_ThenShouldDeleteAndReplaceBy0() {
         // When
-        reduceOperation.operationsToReduce = "5"
+        reduceOperation.operationToReduce = "5"
         reduceOperation.delete()
         
         // Then
-        XCTAssertEqual(reduceOperation.operationsToReduce, "0")
+        XCTAssertEqual(reduceOperation.operationToReduce, "0")
     }
     
     // MARK: Test result()
@@ -191,7 +191,7 @@ class ReduceOperationTestCase: XCTestCase {
     func testGivenUserTapEqual_WhenThereIsAResult_ThenShouldSendNotification() {
         
         // When
-        reduceOperation.operationsToReduce = "33 - 9 ="
+        reduceOperation.operationToReduce = "33 - 9 ="
 
         // Then
         let expect = XCTNSNotificationExpectation(name: .ErrorResult)
@@ -201,7 +201,7 @@ class ReduceOperationTestCase: XCTestCase {
     
     func testGivenUserTapEqual_WhenThereIsErrorPrint_ThenShouldSendNotification() {
         // When
-        reduceOperation.operationsReduced = "Erreur"
+        reduceOperation.operationReduced = "Erreur"
 
         // Then
         let expect = XCTNSNotificationExpectation(name: .ErrorResult)
@@ -211,7 +211,7 @@ class ReduceOperationTestCase: XCTestCase {
 
     func testGivenUserTapEqual_WhenThereIsNotEnoughElements_ThenShouldSendNotification() {
         // When
-        reduceOperation.operationsReduced = "1 +"
+        reduceOperation.operationReduced = "1 +"
 
         // Then
         let expect = XCTNSNotificationExpectation(name: .ErrorExpression)
@@ -221,7 +221,7 @@ class ReduceOperationTestCase: XCTestCase {
     
     func testGivenUserTapEqual_WhenExpressionIsIncorrect_ThenShouldSendNotification() {
         // When
-        reduceOperation.operationsReduced = "1 + 2 +"
+        reduceOperation.operationReduced = "1 + 2 +"
 
         // Then
         let expect = XCTNSNotificationExpectation(name: .ErrorExpression)
@@ -240,7 +240,7 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
         
         // Then
-        if let intOperationsReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationsReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationsReduced, 3 + 5)
         }
     }
@@ -254,7 +254,7 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
 
         // Then
-        if let intOperationsReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationsReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationsReduced, 19 - 9)
         }
     }
@@ -268,7 +268,7 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
 
         // Then
-        if let intOperationReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationReduced, 30 * 29)
         }
     }
@@ -282,20 +282,20 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
 
         // Then
-        if let intOperationReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationReduced, 45 / 5)
         }
     }
 
     func testGivenElementAre32And0_WhenTheyAreDivided_ThenOperationReducedShouldBeError() {
         // Given
-        reduceOperation.operationsToReduce = "32 / 0"
+        reduceOperation.operationToReduce = "32 / 0"
       
         // When
         reduceOperation.calculResult()
 
         // Then
-        XCTAssertEqual(reduceOperation.operationsReduced, "Erreur")
+        XCTAssertEqual(reduceOperation.operationReduced, "Erreur")
     }
 
     func testGivenThereAreAdditionThenMultiplication_WhenOperationIsReduced_ThenCalculShouldBeginByTheMultiplication() {
@@ -306,7 +306,7 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
 
         // Then
-        if let intOperationReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationReduced, 34 + 32 * 13)
         }
     }
@@ -319,7 +319,7 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
 
         // Then
-        if let intOperationReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationReduced, 25 - 12 / 55)
         }
     }
@@ -333,7 +333,7 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
 
         // Then
-        if let intOperationReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationReduced, 23 - 64 / 12 + 43 * 14)
         }
     }
@@ -346,7 +346,7 @@ class ReduceOperationTestCase: XCTestCase {
         reduce(operation: operation)
 
         // Then
-        if let intOperationReduced = Double(reduceOperation.operationsReduced) {
+        if let intOperationReduced = Double(reduceOperation.operationReduced) {
             XCTAssertEqual(intOperationReduced, 2 + 2 * 2 / 2)
         }
     }
